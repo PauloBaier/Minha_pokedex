@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Pokedex</title>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div>
+            <div class="titulo" id="titulo">
+                <h1>POKEDEX</h1>
+            </div>
+            <div id="menu-button">
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="menu-collapse" class="hide">
+                <div class="menu">
+                    <a href="./index.html">Inicio</a>
+                </div>
+                <div class="menu">
+                    <a href="">Favoritos</a>
+                </div>
+                <div class="menu">
+                    <a href="">Pokémons</a>
+                </div>
+            </div>
+            <div class="menu" id="buscar">
+                <form id="search-form">
+                    <input type="search" name="query" placeholder="Buscar">
+                    <!--<input type="submit" value="Ir">-->
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <section>
+        <div class="container">
+            <div >
+                <input type="text" id="input-pokemon" placeholder="Add Pokémon">
+                <button id="btn-pokemon">Add</button>
+            </div>
+        </div> 
+    </section>
+    <section class="grid-container" id="lista">
+    </section>
+</body>
+<script src="script.js"></script>
+<script>
+    let menuButton = document.querySelector("#menu-button")
+    let collapseMenu = document.querySelector("#menu-collapse")
+
+    menuButton.addEventListener('click', function(){
+        collapseMenu.classList.toggle('show')
+        collapseMenu.classList.toggle('hide')
+    })
+</script>
+</html>

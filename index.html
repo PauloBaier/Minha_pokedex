@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Pokedex</title>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div>
+            <div class="titulo" id="titulo">
+                <h1>POKEDEX</h1>
+            </div>
+            <div id="menu-button">
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="menu-collapse" class="hide">
+                <div class="menu">
+                    <a href="./index.html">Inicio</a>
+                </div>
+                <div class="menu">
+                    <a href="./localStorage.html">Favoritos</a>
+                </div>
+                <div class="menu">
+                    <a href="./pokemons.html">Pokémons</a>
+                </div>
+            </div>
+            <div class="menu" id="buscar">
+                <form id="search-form">
+                    <input type="search" name="query" placeholder="Buscar">
+                    <!--<input type="submit" value="Ir">-->
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div id="banner">
+        <img src="./assets/banner.png">
+    </div>
+    <div class="container">
+        <div id="busca-meio-pagina">
+            <input type="text" placeholder="Buscar Pokémon">
+            <button>Ir</button>
+        </div>
+    </div>    
+        
+    <section class="info">
+        <h2>O que é uma Pokédex?</h2>
+        <p>A Pokédex é um dispositivo fictício presente no universo Pokémon, criado para catalogar e registrar
+        informações sobre todas as espécies conhecidas de Pokémon. Em jogos, animes e mangás, ela funciona
+        como uma enciclopédia digital, exibindo dados como aparência, tipo, habilidades e curiosidades de cada 
+        criatura.
+        No nosso site, a Pokédex é recriada para que você possa explorar e conhecer diferentes Pokémon de forma 
+        interativa, como se estivesse em uma verdadeira jornada de treinador.</p>
+    </section>
+    <section>
+        <div class="container" id="pokemons-mostra">
+            <div class="card-mostra">
+                <img  src="">
+                <h1></h1>
+            </div>
+            <div class="card-mostra">
+                <img  src="">
+                <h1></h1>
+            </div>
+            <div class="card-mostra">
+                <img  src="">
+                <h1></h1>
+            </div>
+        </div>
+    </section>
+    <img id="picachu" src="">
+</body>
+<script>
+
+    // want to fill card-mostra with 3 pokemons
+    let pokemons_iniciais = ['Squirtle', 'bulbasaur', 'charmander']
+
+    let children = document.querySelectorAll('.card-mostra')
+
+    let cards = Array.from(children)
+    console.log(cards.length)
+
+    for (let i = 0; i < cards.length; i++){
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemons_iniciais[i]}`)
+        .then(res => res.json())
+        .then(res => {
+            let img = cards[i].querySelector('img')
+            img.src = res.sprites.front_default
+
+            let name = cards[i].querySelector('h1')
+            name.innerHTML = res.name
+        })
+    }
+
+    let menuButton = document.querySelector("#menu-button")
+    let collapseMenu = document.querySelector("#menu-collapse")
+
+    menuButton.addEventListener('click', function(){
+        //collapseMenu.style.display == '' ? collapseMenu.style.display = 'flex' : collapseMenu.style.display = ''
+        collapseMenu.classList.toggle('show')
+        collapseMenu.classList.toggle('hide')
+    })
+
+
+    document.getElementById('search-form').addEventListener('submit', function(e){
+        e.preventDefault()
+        let query = e.target.query.value.trim()
+        if(query){
+            let formatted = encodeURIComponent(query)
+
+            window.location.href = "/search/"+formatted
+        }
+    })
+
+    
+</script>
+</html>

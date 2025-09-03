@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Pokedex</title>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div>
+            <div class="titulo" id="titulo">
+                <h1>POKEDEX</h1>
+            </div>
+            <div id="menu-button">
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="menu-collapse" class="hide">
+                <div class="menu">
+                    <a href="./index.html">Inicio</a>
+                </div>
+                <div class="menu">
+                    <a href="">Favoritos</a>
+                </div>
+                <div class="menu">
+                    <a href="">Pokémons</a>
+                </div>
+            </div>
+            <div class="menu" id="buscar">
+                <form id="search-form">
+                    <input type="search" name="query" placeholder="Buscar">
+                    <!--<input type="submit" value="Ir">-->
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="grid-container" id="container">
+    </div>
+    <div id="pagination">
+        <button id="prev">Voltar</button>
+        <span id="page-number">1</span>
+        <button id="next">Proximo</button>
+    </div>
+</body>
+<script>
+
+    let menuButton = document.querySelector("#menu-button")
+    let collapseMenu = document.querySelector("#menu-collapse")
+
+    menuButton.addEventListener('click', function(){
+        collapseMenu.classList.toggle('show')
+        collapseMenu.classList.toggle('hide')
+    })
+
+    let container = document.getElementById('container')
+    let currentPage = 1
+    let nextBtn = document.getElementById('next')
+    let pageNumberSpan = document.getElementById('page-number')
+    let prevBtn = document.getElementById('prev')  
+
+    nextBtn.addEventListener('click', function(){
+        if(currentPage < 50){
+            clearContainer()
+            currentPage += 1
+            let offset = (currentPage - 1) * 52
+            pageNumberSpan.textContent = currentPage
+            
+            fetch(`https://pokeapi.co/api/v2/pokemon?limit=52&offset=${offset}`)
+            .then(res => res.json())
+            .then(res => {
+                res.results.forEach(re => {
+                    createCard(re.name, re.url)
+                })
+            } )
+        }
+        
+    })
+
+    prevBtn.addEventListener('click', function(){
+        if(currentPage > 1){
+            clearContainer()
+            currentPage -= 1
+            let offset = (currentPage - 1) * 52
+            pageNumberSpan.textContent = currentPage
+            
+            fetch(`https://pokeapi.co/api/v2/pokemon?limit=52&offset=${offset}`)
+            .then(res => res.json())
+            .then(res => {
+                res.results.forEach(re => {
+                    createCard(re.name, re.url)
+                })
+            } )
+        }
+        
+    })
+
+    document.addEventListener('DOMContentLoaded', function(){
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=52')
+        .then( res => res.json())
+        .then( res => {
+            res.results.forEach(re => {
+                createCard(re.name, re.url)
+            });
+        })
+    })
+
+    document.getElementById('search-form').addEventListener('submit', function(e){
+        e.preventDefault()
+        let query = e.target.query.value.trim()
+        if(query){
+            let formatted = encodeURIComponent(query)
+
+            window.location.href = "/search/"+formatted
+        }
+    })
+
+    function createCard(name, url){
+        let id = url.split('/').filter(Boolean).pop()
+
+        card = document.createElement('div')
+        card.classList.add('card-mostra')
+
+        img = document.createElement('img')
+        card.appendChild(img)
+        img.loading = "lazy"
+        img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+
+        h1 = document.createElement('h1')
+        h1.innerHTML = name
+        card.appendChild(h1)
+
+        card.addEventListener('click', () => {
+            window.location.href = `http://127.0.0.1:5500/info.html?pokemom=${name}`
+        })
+
+        container.appendChild(card)
+        
+
+    }
+
+    function clearContainer(){
+        container.innerHTML = "";
+    }
+
+    
+</script>
+</html>

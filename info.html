@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Pokedex</title>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div>
+            <div class="titulo" id="titulo">
+                <h1>POKEDEX</h1>
+            </div>
+            <div id="menu-button">
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="menu-collapse" class="hide">
+                <div class="menu">
+                    <a href="./index.html">Inicio</a>
+                </div>
+                <div class="menu">
+                    <a href="./localStorage.html">Favoritos</a>
+                </div>
+                <div class="menu">
+                    <a href="./pokemons.html">Pokémons</a>
+                </div>
+            </div>
+            <div class="menu" id="buscar">
+                <form id="search-form">
+                    <input type="search" name="query" placeholder="Buscar">
+                    <!--<input type="submit" value="Ir">-->
+                </form>
+            </div>
+        </div>
+    </nav>
+    <section>
+        <div class="pokemom-info">
+            <div id="pokemom-info-img">
+                <!-- <img id="pokedex-png" src="./assets/pokedex_only.png"> -->
+                <img id="sprite" src="">
+                <h3 id="poke-name"></h3>
+                <div id="stats">
+                    <label>HP:</label>
+                    <label id="hp"></label><br>
+                    <label>Attack:</label>
+                    <label id="atack"></label>
+                </div>
+            </div>
+            <div id="">
+                <div class="traits"><Label class="l-info">Pokemom:</Label><label class="l-info" id="poke-name-title"></label></div>
+                <div>
+                    <div class="traits"><label>Weight:</label><label id="weight-info"></label></div>
+                    <div class="traits"><label>Height:</label><label id="height-info"></label></div>
+                    <div class="traits"><label>Type:</label><label id="type-info"></label></div>
+                    <div class="traits description">
+                        <h4>Description:</h4>
+                        <p id="description-info"></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+
+    const queryUrl = window.location.search
+    const urlParam = new URLSearchParams(queryUrl)
+    const pokemom = urlParam.get('pokemom')
+
+    try{
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemom}`)
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById('poke-name').textContent = capitalize(res.name)
+            document.getElementById('poke-name-title').textContent = capitalize(res.name)
+            document.getElementById('sprite').src = res.sprites.front_default
+            document.getElementById('hp').textContent = res.stats.find(s => s.stat.name == 'hp').base_stat
+            document.getElementById('atack').textContent = res.stats.find(s => s.stat.name == 'attack').base_stat
+            document.getElementById('weight-info').textContent = (res.weight/10) + ' KG'
+            document.getElementById('height-info').textContent = (res.height/10) + ' M'
+            document.getElementById('type-info').textContent = capitalize(res.types[0].type.name)
+            fetch(`${res.species.url}`)
+            .then( response => response.json())
+            .then( response => {
+                document.getElementById('description-info').textContent = response.flavor_text_entries.find(f => f.language.name == 'en').flavor_text
+            })
+        })
+    }
+    catch{
+
+    }
+
+    let menuButton = document.querySelector("#menu-button")
+    let collapseMenu = document.querySelector("#menu-collapse")
+
+    menuButton.addEventListener('click', function(){
+        collapseMenu.classList.toggle('show')
+        collapseMenu.classList.toggle('hide')
+    })
+
+
+    document.getElementById('search-form').addEventListener('submit', function(e){
+        e.preventDefault()
+        let query = e.target.query.value.trim()
+        if(query){
+            let formatted = encodeURIComponent(query)
+
+            window.location.href = "/search/"+formatted
+        }
+    })
+
+    function capitalize(str){
+        return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ")
+    }
+    
+</script>
+</html>
