@@ -63,16 +63,23 @@
     <section>
         <div class="container" id="pokemons-mostra">
             <div class="card-mostra">
-                <img  src="">
-                <h1></h1>
+                <a href="info.html?pokemom=squirtle">
+                    <img  src="">
+                    <h1></h1>
+                </a>
+                
             </div>
             <div class="card-mostra">
-                <img  src="">
-                <h1></h1>
+                <a href="info.html?pokemom=bulbasaur">
+                    <img  src="">
+                    <h1></h1>
+                </a>
             </div>
             <div class="card-mostra">
-                <img  src="">
-                <h1></h1>
+                <a href="info.html?pokemom=charmander">
+                    <img  src="">
+                    <h1></h1>
+                </a>
             </div>
         </div>
     </section>
@@ -116,7 +123,7 @@
         if(query){
             let formatted = encodeURIComponent(query)
 
-            window.location.href = "/search/"+formatted
+            window.location.href = "info.html?pokemom="+formatted
         }
     })
 

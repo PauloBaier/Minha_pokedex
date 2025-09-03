@@ -78,30 +78,50 @@
     const queryUrl = window.location.search
     const urlParam = new URLSearchParams(queryUrl)
     const pokemom = urlParam.get('pokemom')
+    const typeColors = [
+        { type: "Normal",   color: "#A8A77A" },
+        { type: "Fire",     color: "#EE8130" },
+        { type: "Water",    color: "#6390F0" },
+        { type: "Grass",    color: "#2a610a" },
+        { type: "Electric", color: "#F7D02C" },
+        { type: "Ice",      color: "#96D9D6" },
+        { type: "Fighting", color: "#C22E28" },
+        { type: "Poison",   color: "#A33EA1" },
+        { type: "Ground",   color: "#E2BF65" },
+        { type: "Flying",   color: "#A98FF3" },
+        { type: "Psychic",  color: "#F95587" },
+        { type: "Bug",      color: "#A6B91A" },
+        { type: "Rock",     color: "#B6A136" },
+        { type: "Ghost",    color: "#735797" },
+        { type: "Dragon",   color: "#6F35FC" },
+        { type: "Dark",     color: "#705746" },
+        { type: "Steel",    color: "#B7B7CE" },
+        { type: "Fairy",    color: "#D685AD" }
+        ];
 
-    try{
-        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemom}`)
-        .then(res => res.json())
-        .then(res => {
-            document.getElementById('poke-name').textContent = capitalize(res.name)
-            document.getElementById('poke-name-title').textContent = capitalize(res.name)
-            document.getElementById('sprite').src = res.sprites.front_default
-            document.getElementById('hp').textContent = res.stats.find(s => s.stat.name == 'hp').base_stat
-            document.getElementById('atack').textContent = res.stats.find(s => s.stat.name == 'attack').base_stat
-            document.getElementById('weight-info').textContent = (res.weight/10) + ' KG'
-            document.getElementById('height-info').textContent = (res.height/10) + ' M'
-            document.getElementById('type-info').textContent = capitalize(res.types[0].type.name)
-            fetch(`${res.species.url}`)
-            .then( response => response.json())
-            .then( response => {
-                document.getElementById('description-info').textContent = response.flavor_text_entries.find(f => f.language.name == 'en').flavor_text
-            })
+    
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemom}`)
+    .then(res => res.json())
+    .then(res => {
+        document.getElementById('poke-name').textContent = capitalize(res.name)
+        document.getElementById('poke-name-title').textContent = capitalize(res.name)
+        document.getElementById('sprite').src = res.sprites.front_default
+        document.getElementById('hp').textContent = res.stats.find(s => s.stat.name == 'hp').base_stat
+        document.getElementById('atack').textContent = res.stats.find(s => s.stat.name == 'attack').base_stat
+        document.getElementById('weight-info').textContent = (res.weight/10) + ' KG'
+        document.getElementById('height-info').textContent = (res.height/10) + ' M'
+        document.getElementById('type-info').textContent = capitalize(res.types[0].type.name)
+        document.documentElement.style.setProperty('--cor-fundo-div', typeColors.find(t => t.type.toLowerCase() == res.types[0].type.name.toLowerCase()).color)
+        fetch(`${res.species.url}`)
+        .then( response => response.json())
+        .then( response => {
+            document.getElementById('description-info').textContent = response.flavor_text_entries.find(f => f.language.name == 'en').flavor_text
         })
-    }
-    catch{
-
-    }
-
+    })
+    .catch(err => {
+        alert("Não foi Possível Carregar Pokemom!")
+    })      
+    
     let menuButton = document.querySelector("#menu-button")
     let collapseMenu = document.querySelector("#menu-collapse")
 
@@ -118,6 +138,16 @@
             let formatted = encodeURIComponent(query)
 
             window.location.href = "/search/"+formatted
+        }
+    })
+
+    document.getElementById('search-form').addEventListener('submit', function(e){
+        e.preventDefault()
+        let query = e.target.query.value.trim()
+        if(query){
+            let formatted = encodeURIComponent(query)
+
+            window.location.href = "info.html?pokemom="+formatted
         }
     })
 

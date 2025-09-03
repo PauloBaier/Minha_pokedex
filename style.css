@@ -3,7 +3,7 @@
     --cor-secundaria: #ff6969;
     --cor-botao: #0c1844;
     --cor-fundo: #eeeeee;
-    --cor-fundo-div: #009cd0;
+    --cor-fundo-div: #EE8130;
     --cor-label: #87c244;
     --cor-texto: #1C1C1C;
 }
@@ -376,6 +376,37 @@ section p{
     #busca-meio-pagina{
         width: 90%;
     }
+    .pokemom-info{
+        height: auto;
+        width: 380px;
+        flex-direction: column;
+    }
+    #pokemom-info-img h3{
+        position: absolute;
+        top: 75%;
+        left: 12%;
+    }
+    #stats{
+        position: absolute;
+        top: 84%;
+        left: 34%;
+        font-size: 0.9em;
+    }
+    .pokemom-info>div{
+        height: 800px;
+    }
+    #sprite{
+        image-rendering: pixelated;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        align-self: center;
+        vertical-align: middle;
+    }
+    #pokemom-info-img h3{
+        font-size: 100%;
+    }
+
 }
 
 
