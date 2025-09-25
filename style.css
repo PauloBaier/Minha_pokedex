@@ -290,6 +290,10 @@ section p{
     -webkit-text-stroke: 0.5px #000040;
 }
 
+#page-number{
+    width: 35px;
+}
+
 @media screen and (max-width: 1000px){
     #pokemons-mostra{
         display: block;

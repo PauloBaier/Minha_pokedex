@@ -45,7 +45,7 @@
     </div>
     <div id="pagination">
         <button id="prev">Voltar</button>
-        <span id="page-number">1</span>
+        <input type="text" id="page-number"></input>
         <button id="next">Proximo</button>
     </div>
 </body>
@@ -65,12 +65,34 @@
     let pageNumberSpan = document.getElementById('page-number')
     let prevBtn = document.getElementById('prev')  
 
+    pageNumberSpan.addEventListener('keydown', function(event){
+        if(event.key == 'Enter'){
+            if(pageNumberSpan.value > 0 && pageNumberSpan.value < 27 && !isNaN(pageNumberSpan.value)){
+                clearContainer()
+                currentPage = pageNumberSpan.value
+                let offset = (currentPage - 1) * 52
+                pageNumberSpan.value = currentPage
+                
+                fetch(`https://pokeapi.co/api/v2/pokemon?limit=52&offset=${offset}`)
+                .then(res => res.json())
+                .then(res => {
+                    res.results.forEach(re => {
+                        createCard(re.name, re.url)
+                    })
+                } )
+            }
+            else{
+                alert("Coloque um número válido!")
+            }
+        }
+    })
+
     nextBtn.addEventListener('click', function(){
-        if(currentPage < 50){
+        if(currentPage < 27){
             clearContainer()
             currentPage += 1
             let offset = (currentPage - 1) * 52
-            pageNumberSpan.textContent = currentPage
+            pageNumberSpan.value = currentPage
             
             fetch(`https://pokeapi.co/api/v2/pokemon?limit=52&offset=${offset}`)
             .then(res => res.json())
@@ -88,7 +110,7 @@
             clearContainer()
             currentPage -= 1
             let offset = (currentPage - 1) * 52
-            pageNumberSpan.textContent = currentPage
+            pageNumberSpan.value = currentPage
             
             fetch(`https://pokeapi.co/api/v2/pokemon?limit=52&offset=${offset}`)
             .then(res => res.json())
@@ -109,6 +131,7 @@
                 createCard(re.name, re.url)
             });
         })
+        pageNumberSpan.value = currentPage
     })
 
     document.getElementById('search-form').addEventListener('submit', function(e){
