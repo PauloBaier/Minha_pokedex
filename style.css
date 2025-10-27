@@ -123,6 +123,9 @@ body{
     width:80%;
     margin-left: 10%;
 }
+.card-mostra:hover img{
+    animation: roda 1s forwards;
+}   
 .card-mostra h1{
     width: 100%;
     text-align: center;
@@ -440,5 +443,13 @@ section p{
     100%{
         opacity: 1px;
         height:0px;
+    }
+}
+@keyframes roda{
+    from{
+        transform: scale3d(1, 1, 1);
+    }
+    to{
+        transform: scale3d(1.5, 1.5, 1.5);
     }
 }
